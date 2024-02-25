@@ -1,24 +1,36 @@
-import logo from './logo.svg';
+import { useContext } from 'react';
 import './App.css';
+import Sidebar from './components/Sidebar'
+import Chat from './components/Chat'
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Datacontext } from './context/Dataprovider';
+import Login from './components/Login';
+
+
 
 function App() {
+  const {account} = useContext(Datacontext);
+
+  const Sidebar_and_chat = () => {
+    return (
+      <>
+        <Sidebar/>
+        <Chat/>
+      </>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GoogleOAuthProvider clientId="904572091174-i12m156rlu577cp9gtenvl041pneph32.apps.googleusercontent.com">
+      <div className="App">
+        <div className="chat_container">
+          {
+            account ? <Sidebar_and_chat/> : <Login/>
+          }
+
+        </div>
+      </div>
+    </GoogleOAuthProvider>
   );
 }
 
