@@ -62,7 +62,7 @@ export default function Sidebar() {
     <div className='Sidebar'>
         <div className="sidebar_header">   
             <Avatar className="sidebar_header-avatar"  src={account?.picture}/>
-            <p className='sidebar_header_name'>{account?.family_name}</p>
+            <p className='sidebar_header_name'>{account?.name.split(" ")[0]}</p>
             <BorderColorIcon className='sidebar_icons edit'/>
             <MoreHorizIcon className='sidebar_icons more'/>
         </div>
