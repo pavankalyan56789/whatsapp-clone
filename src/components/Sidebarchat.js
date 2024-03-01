@@ -7,7 +7,7 @@ import { Datacontext } from '../context/Dataprovider';
 
 export default function Sidebarchat({newchatlist, reveal}) {
 
-    const {chatlist, setChatlist, setCurrentchat} = useContext(Datacontext);
+    const {chatlist, setChatlist, setCurrentchat, account} = useContext(Datacontext);
 
     const [currentindex, setcurrentindex] = useState(-1);
 
@@ -72,23 +72,23 @@ export default function Sidebarchat({newchatlist, reveal}) {
     <div>
         {
             newchatlist && newchatlist?.map(
-                (chat,index) => {
+                (user,index) => {
 
                     // If reveal==true means archived section is visibe
                     //else archived section is hidden as written in Sidebar.js
-                    if(reveal==chat.archived)
+                    if(account.sub !== user.sub)
                     return (
                         <div className="sidebar_container" key={index}>
-                                <div className='sidebar_chat' onClick={()=>setCurrentchat(chat)}>
+                                <div className='sidebar_chat' onClick={()=>setCurrentchat(user)}>
                                     <Avatar 
                                     className="sidebar_header-avatar"  
-                                    src={chat.pic}/>
+                                    src={user.picture}/>
                                     <div className='sidebar_chat_info'>
-                                        <h3>{chat.name}</h3>
-                                        <p>{chat.messages[chat.messages.length-1].content}</p>
-                                        <span>
-                                            {chat.messages[chat.messages.length-1].time}
-                                        </span>
+                                        <h3>{user.name}</h3>
+                                        {/* <p>{chat.messages[chat.messages.length-1].content}</p> */}
+                                        {/* <span> */}
+                                            {/* {chat.messages[chat.messages.length-1].time} */}
+                                        {/* </span> */}
                                         <KeyboardArrowDownIcon className='down_arrow' 
                                         onClick={(event)=>handleDropdown(index, event)}/>
                                     </div>
