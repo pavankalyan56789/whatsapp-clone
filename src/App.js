@@ -16,7 +16,7 @@ function App() {
     
     const fetchData = async () => {
       let users = await getUser();
-      console.log(users);
+      // console.log(users);
       setChatlist(users);
     }
 

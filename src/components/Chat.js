@@ -15,13 +15,19 @@ import { Datacontext } from '../context/Dataprovider';
 export default function Chat() {
 
   const {chatlist, currentchat} = useContext(Datacontext);
+  const [messageInput, setMessageInput] = useState("");
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    console.log("message sent");
+  };
 
 
 
   return (
     <div className='Chat'>
       <div className='chat_header'>
-        <Avatar className="chat_header-avatar"  src={currentchat.pic}/>
+        <Avatar className="chat_header-avatar"  src={currentchat.picture}/>
         <div className='chat_name'>
           <h3>{currentchat.name}</h3>
           <p>online</p>
@@ -49,7 +55,11 @@ export default function Chat() {
       <div className='chat_footer'>
         <EmojiEmotionsOutlinedIcon/>
         <AttachFileOutlinedIcon/>
-        <input placeholder='Type a message'></input>
+        <form onSubmit={(e)=>sendMessage(e)}>
+          <input value={messageInput} 
+          onChange={(e)=>setMessageInput(e.target.value)}
+          placeholder='Type a message'></input>
+        </form>
         <SendOutlinedIcon/>
       </div>
     </div>

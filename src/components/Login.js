@@ -31,7 +31,7 @@ export default function Login() {
                 // // const decoded = jwtDecode(token);
                 const decoded = jwtDecode(credentialResponse.credential);
                 let filteredUser = filterUserData(decoded);
-                console.log(filteredUser);
+                // console.log(filteredUser);
                 setAccount(filteredUser);
 
                 await addUser(filteredUser);

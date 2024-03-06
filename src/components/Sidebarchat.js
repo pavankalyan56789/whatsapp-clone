@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Avatar from '@mui/material/Avatar';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Datacontext } from '../context/Dataprovider';
+import { setConversation } from '../service/Api';
 
 export default function Sidebarchat({newchatlist, reveal}) {
 
@@ -34,6 +35,13 @@ export default function Sidebarchat({newchatlist, reveal}) {
             setcurrentindex(index);
         }
     };
+
+    const addConversation = async (user) => {
+        setCurrentchat(user);
+        //Calling the API so that the conversation will be set between the loggedin user and the current
+        //chat person I clicked upon. senderID is my ID
+        await setConversation({ senderId: account.sub, receiverId: user.sub });
+    }
 
     const handleArchive = (index, event) => {
         // event.stopPropagation();
@@ -79,7 +87,7 @@ export default function Sidebarchat({newchatlist, reveal}) {
                     if(account.sub !== user.sub)
                     return (
                         <div className="sidebar_container" key={index}>
-                                <div className='sidebar_chat' onClick={()=>setCurrentchat(user)}>
+                                <div className='sidebar_chat' onClick={()=>addConversation(user)}>
                                     <Avatar 
                                     className="sidebar_header-avatar"  
                                     src={user.picture}/>
