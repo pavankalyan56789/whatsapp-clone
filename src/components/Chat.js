@@ -10,12 +10,25 @@ import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import { useParams } from 'react-router-dom';
 import { Datacontext } from '../context/Dataprovider';
+import { getConversation } from '../service/Api';
 
 
 export default function Chat() {
 
-  const {chatlist, currentchat} = useContext(Datacontext);
+  const {account, chatlist, currentchat} = useContext(Datacontext);
   const [messageInput, setMessageInput] = useState("");
+
+  useEffect( () => {
+    
+    const fetchData = async () => {
+      let currConversation = await getConversation({
+        senderId : account.sub,
+        receiverId : currentchat.sub,
+      });
+    }
+
+    fetchData();
+  }, [currentchat.sub]);
 
   const sendMessage = (e) => {
     e.preventDefault();

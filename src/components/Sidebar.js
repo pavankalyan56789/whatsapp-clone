@@ -91,13 +91,29 @@ export default function Sidebar() {
                 </p>
             </div>
 
-            <Sidebarchat newchatlist={newchatlist} reveal = {reveal}/>
+
+            {
+            newchatlist && newchatlist?.map(
+                (user,index) => {
+                    if(account.sub !== user.sub)
+                            return (<Sidebarchat key={index} newchatlist={newchatlist} reveal = {reveal}/>);         
+                    }
+                )
+            }
+
         </div>
 
         <div className='sidebar_chat_list'>
             {/* We are sending chatlist data from the Sidebar() component to it's child component which icons
             Sidebarchat using props using the syntax below */}
-            <Sidebarchat newchatlist={newchatlist} reveal = {reveal}/>
+            {
+            newchatlist && newchatlist?.map(
+                (user,index) => {
+                    if(account.sub !== user.sub)
+                            return (<Sidebarchat key={index} user={user} index={index}/>);         
+                    }
+                )
+            }
         </div>
     </div>
   )

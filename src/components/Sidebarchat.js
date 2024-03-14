@@ -1,16 +1,32 @@
-import {React, useState, useContext} from 'react'
+import {React, useState, useContext, useEffect} from 'react'
 import Sidebar from './Sidebar';
 
 import Avatar from '@mui/material/Avatar';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Datacontext } from '../context/Dataprovider';
-import { setConversation } from '../service/Api';
+import { getConversation, setConversation } from '../service/Api';
 
-export default function Sidebarchat({newchatlist, reveal}) {
+export default function Sidebarchat({user, index, reveal}) {
 
     const {chatlist, setChatlist, setCurrentchat, account} = useContext(Datacontext);
 
     const [currentindex, setcurrentindex] = useState(-1);
+    const [currConversation, setCurrConversation] = useState(-1);
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            let data = await getConversation(
+                {
+                    senderId: account?.sub, 
+                    receiverId: user?.sub
+                }
+            );
+            // console.log(users);
+            setCurrConversation(data);
+          }
+      
+          if(account && user) fetchData();
+    }, [])
 
     // console.log(newchatlist);
 
@@ -78,21 +94,14 @@ export default function Sidebarchat({newchatlist, reveal}) {
     //console.log(chatlist);
   return (
     <div>
-        {
-            newchatlist && newchatlist?.map(
-                (user,index) => {
-
-                    // If reveal==true means archived section is visibe
-                    //else archived section is hidden as written in Sidebar.js
-                    if(account.sub !== user.sub)
-                    return (
+        
                         <div className="sidebar_container" key={index}>
                                 <div className='sidebar_chat' onClick={()=>addConversation(user)}>
                                     <Avatar 
                                     className="sidebar_header-avatar"  
-                                    src={user.picture}/>
+                                    src={user?.picture}/>
                                     <div className='sidebar_chat_info'>
-                                        <h3>{user.name}</h3>
+                                        <h3>{user?.name}</h3>
                                         {/* <p>{chat.messages[chat.messages.length-1].content}</p> */}
                                         {/* <span> */}
                                             {/* {chat.messages[chat.messages.length-1].time} */}
@@ -119,12 +128,6 @@ export default function Sidebarchat({newchatlist, reveal}) {
                                 <div className='dropdown_item'>Delete chat</div>
                             </div>
                         </div>
-                    );
-                    
-                }
-            )
-        }
-        
     </div>
   )
 }
