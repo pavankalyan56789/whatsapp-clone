@@ -71,12 +71,19 @@
     bottom: 0;
 }
 
-.chat_footer > input
-{   
-    width: 85%;  
-    border: none;
+
+form {
+    display: flex;
+    width: 75%;
     padding: 5px;
+}
+
+input
+{   
+    width: 100%;  
+    border: none;
     outline: 0;
+    padding: 5px;
     border-bottom: 1px solid green; 
     background-color: #202826;
     color: white;

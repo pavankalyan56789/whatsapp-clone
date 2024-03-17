@@ -10,29 +10,43 @@ import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import { useParams } from 'react-router-dom';
 import { Datacontext } from '../context/Dataprovider';
-import { getConversation } from '../service/Api';
+import { addMessage, getConversation } from '../service/Api';
 
 
 export default function Chat() {
 
   const {account, chatlist, currentchat} = useContext(Datacontext);
   const [messageInput, setMessageInput] = useState("");
+  const [currentConversation, setCurrrentConversation] = useState({});
+
+  
+  const fetchData = async () => {
+    let currConversation = await getConversation({
+      senderId : account.sub,
+      receiverId : currentchat.sub,
+    });
+
+    console.log(currConversation);
+    
+    setCurrrentConversation(currConversation);
+  }
 
   useEffect( () => {
-    
-    const fetchData = async () => {
-      let currConversation = await getConversation({
-        senderId : account.sub,
-        receiverId : currentchat.sub,
-      });
-    }
-
     fetchData();
   }, [currentchat.sub]);
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
-    console.log("message sent");
+    // console.log("message sent");
+    console.log(messageInput);
+    await addMessage({
+      conversationId :  currentConversation?._id,
+      message : messageInput,
+      type : "text",
+      senderId: account.sub,
+      receiverId: currentchat.sub,
+      timestamp: new Date(),
+    });
   };
 
 
