@@ -4,7 +4,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
-    width: 70%;
+    width: 75%;
     position: relative;
 }
 
@@ -91,12 +91,14 @@ input
 
 .chat_message {
     margin-top: 10px;
-    width: 30%;
+    width: fit-content;
     background-color: #293b37;
     color: white;
     padding: 10px;
     border-radius: 10%;
     position: relative;
+    padding-right: 60px;
+    max-width: 40%;
 }
 
 .chat_message> span{

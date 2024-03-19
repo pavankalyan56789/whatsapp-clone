@@ -11,6 +11,7 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import { useParams } from 'react-router-dom';
 import { Datacontext } from '../context/Dataprovider';
 import { addMessage, getConversation } from '../service/Api';
+import { formatDate } from '../utils/formatTime';
 
 
 export default function Chat() {
@@ -18,6 +19,9 @@ export default function Chat() {
   const {account, chatlist, currentchat} = useContext(Datacontext);
   const [messageInput, setMessageInput] = useState("");
   const [currentConversation, setCurrrentConversation] = useState({});
+
+  const [messageFlag, setMessageFlag] = useState(true);
+
 
   
   const fetchData = async () => {
@@ -32,12 +36,18 @@ export default function Chat() {
   }
 
   useEffect( () => {
-    fetchData();
-  }, [currentchat.sub]);
+    if(currentchat.sub!= null)
+    {
+      fetchData();
+    }
+  }, [currentchat.sub, messageFlag]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
     // console.log("message sent");
+    
+    setMessageInput("");
+
     console.log(messageInput);
     await addMessage({
       conversationId :  currentConversation?._id,
@@ -47,6 +57,8 @@ export default function Chat() {
       receiverId: currentchat.sub,
       timestamp: new Date(),
     });
+
+    setMessageFlag(!messageFlag);
   };
 
 
@@ -66,15 +78,18 @@ export default function Chat() {
 
       <div className='chat_body'>
 
-        {currentchat?.messages?.map(
-          (message,index) => {
-            return (
-              <div className={message.sent ? "chat_message chat_sent": "chat_message"} key={index}>
-                {message.content}
-                <span>{message.time}</span>
-              </div>
-            )
-          }
+        {
+          currentConversation && 
+          currentConversation?.messages?.map(
+            (message,index) => {
+              return (
+                <div className={message.senderId === account.sub
+                 ? "chat_message chat_sent": "chat_message"} key={index}>
+                  {message.text}
+                  <span>{formatDate(message?.timestamp)}</span>
+                </div>
+              )
+            }
         )} 
         
       </div>

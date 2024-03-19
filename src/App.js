@@ -6,11 +6,12 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Datacontext } from './context/Dataprovider';
 import Login from './components/Login';
 import { getUser } from './service/Api';
+import defaultImage from '../src/images/default_whatsapp.PNG'
 
 
 
 function App() {
-  const {account, setChatlist} = useContext(Datacontext);
+  const {account, setChatlist, currentchat} = useContext(Datacontext);
   
   useEffect( () => {
     
@@ -27,7 +28,7 @@ function App() {
     return (
       <>
         <Sidebar/>
-        <Chat/>
+        {currentchat ? <Chat/> : <img src={defaultImage} className='defaultImage'/>}
       </>
     );
   }
